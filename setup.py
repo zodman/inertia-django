@@ -12,13 +12,13 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = 'django-inertia'
+NAME = 'inertia-django'
 DESCRIPTION = 'inertia connector for django'
 URL = 'https://github.com/zodman/django-inertia'
 EMAIL = 'zodman@gmail.com'
 AUTHOR = 'Andres vargas'
 REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
