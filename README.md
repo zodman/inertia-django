@@ -115,3 +115,16 @@ new Vue({
 
 ```
 TODO: why not use resolveComponent dynamic.
+
+
+## Routing
+
+### Generating URLs
+
+For the part of the urls the same functionality as laravel or ziggy is 
+
+*django-js-routes* https://pypi.org/project/django-js-routes/
+
+
+# more info https://inertiajs.com/
+
