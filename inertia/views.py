@@ -54,14 +54,14 @@ def render_inertia(request, component_name, props=None, template_name=None):
     if props is None:
         props = {}
     shared = {}
-
-    for k, v in request.session.get("share",{}).items():
-        log.debug((k,v))
-        shared[k]=v
-    props.update(shared)
+    if hasattr(request, "session"):
+        for k, v in request.session.get("share",{}).items():
+            log.debug((k,v))
+            shared[k]=v
+        props.update(shared)
 
     for key in ("success","error","errors"):
-        if  request.session.get(key):
+        if  hasattr(request, "session") and  request.session.get(key):
             del request.session[key]
 
     #del request.session["share"]
