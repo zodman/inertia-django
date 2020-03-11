@@ -11,7 +11,7 @@ more info: https://hackmd.io/@CZ7Qf8ZASPiRGhV9236VSQ/inertiajs
 ### `render_inertia` function
 
 The easiest way to render a Vue component with inertia-django is to use the `render_inertia` function.   
-*Note:* You must to have an `Index.vue` component in your project.
+*Note:* You must  have an `Index.vue` component in your project.
 
 
 ```python
