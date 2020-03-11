@@ -4,7 +4,7 @@ Based on inertia-laravel.
 
 Check https://github.com/zodman/django-inertia-demo for example how to use
 
-
+more info: https://hackmd.io/@CZ7Qf8ZASPiRGhV9236VSQ/inertiajs
 
 ## Usage
 
