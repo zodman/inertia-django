@@ -14,7 +14,7 @@ from setuptools import find_packages, setup, Command
 # Package meta-data.
 NAME = 'inertia-django'
 DESCRIPTION = 'inertia connector for django'
-URL = 'https://github.com/zodman/django-inertia'
+URL = 'https://github.com/zodman/inertia-django'
 EMAIL = 'zodman@gmail.com'
 AUTHOR = 'Andres vargas'
 REQUIRES_PYTHON = '>=3.7.0'
