@@ -124,6 +124,7 @@ For the part of the urls the same functionality as laravel or ziggy is
 
 *django-js-routes* https://pypi.org/project/django-js-routes/
 
+# TODO: explain how inertia/middleware.py works
 
 # more info https://inertiajs.com/
 
