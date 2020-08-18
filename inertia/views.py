@@ -67,9 +67,9 @@ def render_inertia(request, component_name, props=None, template_name=None):
     #del request.session["share"]
 
     # subsequent renders
-    if ('x-inertia' in request.headers and
-        'x-inertia-version' in request.headers and
-        request.headers['x-inertia-version'] == str(asset_version.get_version())):
+    headers = list(map(lambda x: x.lower(), list(request.headers.keys())))
+    if ('x-inertia' in headers):
+#            and request.headers['x-inertia-version'] == str(asset_version.get_version())):
         response = JsonResponse({
             "component": component_name,
             "props": props,

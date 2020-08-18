@@ -18,7 +18,7 @@ URL = 'https://github.com/zodman/inertia-django'
 EMAIL = 'zodman@gmail.com'
 AUTHOR = 'Andres vargas'
 REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '0.2.5'
+VERSION = '0.2.6'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
