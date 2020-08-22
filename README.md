@@ -1,5 +1,6 @@
 # inertia-django conector
 ![Python package](https://github.com/zodman/inertia-django/workflows/Python%20package/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/zodman/inertia-django/badge.svg?branch=master)](https://coveralls.io/github/zodman/inertia-django?branch=master)
 
 Based on inertia-laravel.
 
