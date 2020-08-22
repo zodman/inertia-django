@@ -38,8 +38,6 @@ def render_inertia(request, component_name, props=None, template_name=None):
     the use in an InertiaJS frontend integration.
     """
     inertia_template = None
-
-
     inertia_template = getattr(settings, "INERTIA_TEMPLATE", "base.html")
 
     if template_name is not None:
@@ -55,7 +53,7 @@ def render_inertia(request, component_name, props=None, template_name=None):
         props = {}
     shared = {}
     if hasattr(request, "session"):
-        for k, v in request.session.get("share",{}).items():
+        for k, v in request.session.get("share", {}).items():
             log.debug((k,v))
             shared[k]=v
         props.update(shared)

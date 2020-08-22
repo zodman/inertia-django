@@ -13,7 +13,7 @@ class InertiaMiddleware:
         assert not isInertia, "The client not send X-Inertia Header"
         inertia_version = asset_version.get_version()
         if request.method == "GET" and \
-                request.META.get("X-Inertia-Version") == inertia_version:
+                request.META.get("X-Inertia-Version") != inertia_version:
             request.session.flush()
             response = HttpResponse(status=409)
             response["X-Inertia-Location"] = request.get_full_path_info()

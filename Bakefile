@@ -1,0 +1,5 @@
+test:
+    python -m coverage run -m unittest -v
+    python -m coverage report -m 
+
+t: test
