@@ -17,7 +17,7 @@ DESCRIPTION = 'inertia connector for django'
 URL = 'https://github.com/zodman/inertia-django'
 EMAIL = 'zodman@gmail.com'
 AUTHOR = 'Andres vargas'
-REQUIRES_PYTHON = '>=3.7.0'
+REQUIRES_PYTHON = '>=3.6.0'
 VERSION = '0.2.7'
 
 # What packages are required for this module to be executed?

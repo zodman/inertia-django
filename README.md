@@ -1,4 +1,5 @@
 # inertia-django conector
+![Python package](https://github.com/zodman/inertia-django/workflows/Python%20package/badge.svg)
 
 Based on inertia-laravel.
 
