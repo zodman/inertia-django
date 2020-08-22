@@ -58,28 +58,28 @@ def render_inertia(request, component_name, props=None, template_name=None):
             shared[k]=v
         props.update(shared)
 
-    for key in ("success","error","errors"):
-        if  hasattr(request, "session") and  request.session.get(key):
+    for key in ("success", "error", "errors"):
+        if hasattr(request, "session") and request.session.get(key):
             del request.session[key]
-
-    #del request.session["share"]
 
     # subsequent renders
     headers = list(map(lambda x: x.lower(), list(request.headers.keys())))
-    if ('x-inertia' in headers):
-#            and request.headers['x-inertia-version'] == str(asset_version.get_version())):
+    inertia_version = asset_version.get_version()
+    is_version_correct = 'x-inertia-version' in headers and \
+                         request.headers["X-Inertia-Version"] == str(inertia_version)
+    if 'x-inertia' in headers and is_version_correct:
         response = JsonResponse({
             "component": component_name,
             "props": props,
             "version": asset_version.get_version(),
             "url": request.get_full_path()
         })
-
         response['X-Inertia'] = True
         response['Vary'] = 'Accept'
         return response
     context = _build_context(component_name, props,
-                             asset_version.get_version(), url=request.get_full_path())
+                             asset_version.get_version(),
+                             url=request.get_full_path())
 
     return render(request, inertia_template, context)
 

@@ -10,7 +10,7 @@ class InertiaMiddleware:
 
     def __call__(self, request):
         isInertia = request.META.get("X-Inertia")
-        assert not isInertia, "The client not send X-Inertia Header"
+        assert isInertia, "The client not send X-Inertia Header"
         inertia_version = asset_version.get_version()
         if request.method == "GET" and \
                 request.META.get("X-Inertia-Version") != inertia_version:
