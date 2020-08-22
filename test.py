@@ -20,6 +20,7 @@ from inertia.version import asset_version
 from inertia.views import render_inertia
 from inertia.middleware import InertiaMiddleware
 
+
 class TestInertia(TestCase):
     def test_views(self):
         requestfactory = RequestFactory()
@@ -29,7 +30,7 @@ class TestInertia(TestCase):
 
 
     def test_middlware_missing_header(self):
-        l = lambda request: HttpResponse()
+        view = lambda request: HttpResponse()
         defaults = {'X-Inertia': True}
         request = RequestFactory().get("/", **defaults)
         dict_sessions = {
@@ -37,11 +38,11 @@ class TestInertia(TestCase):
         }
         request.session = MagicMock()
         request.session.__getitem__.side_effect = lambda key: dict_sessions[key]
-        response = InertiaMiddleware(l)(request)
+        response = InertiaMiddleware(view)(request)
         self.assertTrue(response.status_code == 409)
 
     def test_middleware(self):
-        l = lambda request: HttpResponse()
+        view = lambda request: HttpResponse()
         defaults = {
             'X-Inertia': True,
             'X-Inertia-Version': asset_version.get_version()
@@ -52,5 +53,5 @@ class TestInertia(TestCase):
         }
         request.session = MagicMock()
         request.session.__getitem__.side_effect = lambda key: dict_sessions[key]
-        response = InertiaMiddleware(l)(request)
+        response = InertiaMiddleware(view)(request)
         self.assertTrue(response.status_code == 200, response.status_code)
