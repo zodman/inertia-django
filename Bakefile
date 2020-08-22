@@ -3,3 +3,7 @@ test:
     python -m coverage report -m 
 
 t: test
+
+
+comp:
+    pip-compile -o requirements.txt

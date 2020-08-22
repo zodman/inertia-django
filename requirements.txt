@@ -5,6 +5,7 @@
 #    pip-compile --output-file=requirements.txt
 #
 asgiref==3.2.10           # via django
+coverage==5.2.1
 django==3.1
 pytz==2020.1              # via django
 sqlparse==0.3.1           # via django
