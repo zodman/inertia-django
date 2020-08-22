@@ -30,6 +30,6 @@ jobs:
     - name: Executing Test
       run: bake t
     - 
-      uses: coverallsapp/github-action@master
+      uses: AndreMiras/coveralls-python-action@develop
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
