@@ -63,11 +63,10 @@ def render_inertia(request, component_name, props=None, template_name=None):
             del request.session[key]
 
     # subsequent renders
-    headers = list(map(lambda x: x.lower(), list(request.headers.keys())))
     inertia_version = asset_version.get_version()
-    is_version_correct = 'x-inertia-version' in headers and \
+    is_version_correct = 'X-Inertia-Version' in request.headers and \
                          request.headers["X-Inertia-Version"] == str(inertia_version)
-    if 'x-inertia' in headers and is_version_correct:
+    if 'X-Inertia' in request.headers:
         response = JsonResponse({
             "component": component_name,
             "props": props,

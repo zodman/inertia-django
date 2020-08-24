@@ -9,15 +9,17 @@ class InertiaMiddleware:
         # One-time configuration and initialization.
 
     def __call__(self, request):
-        isInertia = request.META.get("X-Inertia")
-        assert isInertia, "The client not send X-Inertia Header"
-        inertia_version = asset_version.get_version()
-        if request.method == "GET" and \
-                request.META.get("X-Inertia-Version") != inertia_version:
-            request.session.flush()
-            response = HttpResponse(status=409)
-            response["X-Inertia-Location"] = request.get_full_path_info()
-            return response
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        if is_ajax:
+            isInertia = request.headers.get("X-Inertia", False)
+            assert isInertia, "The client not send X-Inertia Header"
+            inertia_version = asset_version.get_version()
+            inertia_version_header = str(request.headers.get("X-Inertia-Version", "")) 
+            if inertia_version_header != "" and \
+                    inertia_version_header != str(inertia_version):
+                response = HttpResponse(status=409)
+                response["X-Inertia-Location"] = request.get_full_path_info()
+                return response
         share(request, "flash", {
             'success': request.session.get("success", False),
             'error': request.session.get("error", False)

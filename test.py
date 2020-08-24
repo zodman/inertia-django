@@ -28,30 +28,41 @@ class TestInertia(TestCase):
         response = render_inertia(request, "Index")
         self.assertTrue(b'id="page"' in response.content)
 
-
-    def test_middlware_missing_header(self):
-        view = lambda request: HttpResponse()
-        defaults = {'X-Inertia': True}
-        request = RequestFactory().get("/", **defaults)
+    def set_session(self, request):
         dict_sessions = {
             'share': {}
         }
         request.session = MagicMock()
         request.session.__getitem__.side_effect = lambda key: dict_sessions[key]
+
+    def test_simple_view(self):
+        request = RequestFactory().get("/")
+        self.set_session(request)
+        response = InertiaMiddleware(lambda x: HttpResponse())(request)
+        self.assertTrue(response.status_code==200, response.status_code)
+
+    def test_middlware_missing_header(self):
+        view = lambda x: HttpResponse()
+        defaults = {
+            'X-Inertia': 'true',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Inertia-Version': str(asset_version.get_version()+1),
+        }
+        request = RequestFactory().get("/")
+        request.headers = defaults
+        self.set_session(request)
         response = InertiaMiddleware(view)(request)
-        self.assertTrue(response.status_code == 409)
+        self.assertTrue(response.status_code == 409, response.status_code)
 
     def test_middleware(self):
         view = lambda request: HttpResponse()
         defaults = {
-            'X-Inertia': True,
-            'X-Inertia-Version': asset_version.get_version()
+            'x-Inertia': 'true',
+            'X-Inertia-Version': asset_version.get_version(),
+            'x-Requested-With': 'XMLHttpRequest'
         }
         request = RequestFactory().get("/", **defaults)
-        dict_sessions = {
-            'share': {}
-        }
-        request.session = MagicMock()
-        request.session.__getitem__.side_effect = lambda key: dict_sessions[key]
+        request.headers = defaults
+        self.set_session(request)
         response = InertiaMiddleware(view)(request)
         self.assertTrue(response.status_code == 200, response.status_code)

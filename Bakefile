@@ -1,4 +1,5 @@
 test:
+    set -e
     python -m coverage run -m unittest -v
     python -m coverage report -m 
 

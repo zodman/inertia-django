@@ -14,7 +14,6 @@ Check https://github.com/zodman/django-inertia-demo for example how to use
 The easiest way to render a Vue component with inertia-django is to use the `render_inertia` function.   
 *Note:* You must  have an `Index.vue` component in your project.
 
-
 ```python
 from inertia import render_inertia
 
@@ -115,7 +114,9 @@ new Vue({
 }).$mount(app)
 
 ```
+
 TODO: why not use resolveComponent dynamic.
+TODO: partials reloads
 
 
 ## Routing
