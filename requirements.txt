@@ -5,6 +5,8 @@
 #    pip-compile --output-file=requirements.txt
 #
 asgiref==3.2.10           # via django
+bump2version==1.0.0       # via bumpversion
+bumpversion==0.6.0
 coverage==5.2.1
 django==3.1
 pytz==2020.1              # via django
