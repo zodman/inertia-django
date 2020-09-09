@@ -28,7 +28,6 @@ def _build_context(component_name, props, version, url):
             "props": props
         },
     }
-
     return context
 
 

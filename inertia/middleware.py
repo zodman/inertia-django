@@ -24,6 +24,6 @@ class InertiaMiddleware:
             'success': request.session.get("success", False),
             'error': request.session.get("error", False)
         })
-        share(request, 'errors', request.session.get("errors", []))
+        share(request, 'errors', request.session.get("errors", {}))
         response = self.get_response(request)
         return response
