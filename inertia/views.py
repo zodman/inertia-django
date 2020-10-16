@@ -7,6 +7,7 @@ from django.template.response import TemplateResponse
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.middleware import csrf
+from django.urls import get_callable
 from .share import share
 from .version import asset_version
 
@@ -48,6 +49,12 @@ def render_inertia(request, component_name, props=None, template_name=None):
             "in settings.py or pass template parameter."
         )
 
+    # share custom data if any
+    share_method_path = getattr(settings, "INERTIA_SHARE", None)
+    if share_method_path:
+        share_method = get_callable(share_method_path)
+        share_method(request)
+
     if props is None:
         props = {}
     shared = {}
@@ -78,7 +85,7 @@ def render_inertia(request, component_name, props=None, template_name=None):
     context = _build_context(component_name, props,
                              asset_version.get_version(),
                              url=request.get_full_path())
-
+    import pdb ; pdb.set_trace()
     return render(request, inertia_template, context)
 
 class InertiaMixin:
@@ -95,4 +102,3 @@ class InertiaMixin:
             self.props = {}
         self.props.update(self.get_data(context))
         return render_inertia(self.request, self.component_name, self.props, self.template_name)
-

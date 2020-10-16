@@ -7,18 +7,26 @@ from django.test import RequestFactory
 from django.http import HttpResponse
 import os
 
+from inertia.share import share
+
+
 settings.configure(
     VERSION=1, DEBUG=True,
     TEMPLATES= [{
          'BACKEND': 'django.template.backends.django.DjangoTemplates',
          'APP_DIRS': True,
          'DIRS': [ os.path.join('testutils'), ],
-    }]
+    }],
+    INERTIA_SHARE = "test.share_custom_func"
 )
 django.setup()
 from inertia.version import asset_version
 from inertia.views import render_inertia
 from inertia.middleware import InertiaMiddleware
+
+
+def share_custom_func(request):
+    share(request, "custom_data", "custom_value")
 
 
 class TestInertia(TestCase):
@@ -66,3 +74,12 @@ class TestInertia(TestCase):
         self.set_session(request)
         response = InertiaMiddleware(view)(request)
         self.assertTrue(response.status_code == 200, response.status_code)
+
+    def test_share_custom_data(self):
+        requestfactory = RequestFactory()
+        request = requestfactory.get("/")
+        self.set_session(request)
+        response = render_inertia(request, "Index")
+        import pdb ; pdb.set_trace()
+        self.assertTrue(b'share_custom_data"' in response.content)
+        self.assertTrue(b'share_custom_value"' in response.content)
