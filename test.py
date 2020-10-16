@@ -4,7 +4,7 @@ from unittest import mock
 import django
 from django.conf import settings
 from django.test import RequestFactory
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 import os
 
 settings.configure(
@@ -66,3 +66,19 @@ class TestInertia(TestCase):
         self.set_session(request)
         response = InertiaMiddleware(view)(request)
         self.assertTrue(response.status_code == 200, response.status_code)
+
+    def test_redirect_303_for_put_patch_delete_requests(self):
+        request = RequestFactory().put("/users/1")
+        self.set_session(request)
+        response = InertiaMiddleware(lambda x: HttpResponseRedirect(redirect_to="/users"))(request)
+        self.assertTrue(response.status_code==303, response.status_code)
+
+        request = RequestFactory().patch("/users/1")
+        self.set_session(request)
+        response = InertiaMiddleware(lambda x: HttpResponseRedirect(redirect_to="/users"))(request)
+        self.assertTrue(response.status_code==303, response.status_code)
+
+        request = RequestFactory().delete("/users/1")
+        self.set_session(request)
+        response = InertiaMiddleware(lambda x: HttpResponseRedirect(redirect_to="/users"))(request)
+        self.assertTrue(response.status_code==303, response.status_code)
