@@ -85,7 +85,6 @@ def render_inertia(request, component_name, props=None, template_name=None):
     context = _build_context(component_name, props,
                              asset_version.get_version(),
                              url=request.get_full_path())
-    import pdb ; pdb.set_trace()
     return render(request, inertia_template, context)
 
 class InertiaMixin:

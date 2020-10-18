@@ -80,6 +80,5 @@ class TestInertia(TestCase):
         request = requestfactory.get("/")
         self.set_session(request)
         response = render_inertia(request, "Index")
-        import pdb ; pdb.set_trace()
         self.assertTrue(b'share_custom_data"' in response.content)
         self.assertTrue(b'share_custom_value"' in response.content)
