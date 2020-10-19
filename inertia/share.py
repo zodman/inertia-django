@@ -14,7 +14,7 @@ def share_flash(request, success=False, error=False, errors=False):
         request.session["error"] = error
 
     if errors:
-        request.session["error"] = errors
+        request.session["errors"] = errors
 
     # log.info(("share", success, error, errors))
     share(request, "flash",{'success':success,'error':error})
