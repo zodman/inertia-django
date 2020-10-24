@@ -70,6 +70,10 @@ def event_detail(request, id):
     return render_inertia(request, "Event/Show", props)
 ```
 
+We strong suggest to use [marshmallow](https://marshmallow.readthedocs.io/en/latest/) 
+because it had serializer and validation and  fully compatible with django.
+
+
 ## Client-side setup
 ### Install dependencies
 ```
@@ -115,7 +119,7 @@ new Vue({
 
 ```
 
-TODO: why not use resolveComponent dynamic.
+TODO: why not use resolveComponent dynamic.  
 TODO: partials reloads
 
 
