@@ -50,7 +50,10 @@ def render_inertia(request, component_name, props=None, template_name=None):
         )
 
     # share custom data or default authenticated user
+    # try:
+    # share_method_path = settings.INERTIA_SHARE
     share_method_path = getattr(settings, "INERTIA_SHARE", "inertia.share.share_auth")
+    import pdb; pdb.set_trace()
     if share_method_path:
         share_method = get_callable(share_method_path)
         share_method(request)
