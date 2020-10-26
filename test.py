@@ -99,3 +99,12 @@ class TestInertia(TestCase):
         self.set_session(request)
         response = InertiaMiddleware(lambda x: HttpResponseRedirect(redirect_to="/users"))(request)
         self.assertTrue(response.status_code==303, response.status_code)
+
+    def test_resolve_lazy_loading_props(self):
+        requestfactory = RequestFactory()
+        request = requestfactory.get("/")
+        self.set_session(request)
+        def lazy_loaded_prop():
+            return "2"
+        response = render_inertia(request, "Index", {"a": "1", "b": lazy_loaded_prop})
+        self.assertTrue(b'"props": {"a": "1", "b": "2"}' in response.content)
