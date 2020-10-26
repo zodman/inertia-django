@@ -76,24 +76,38 @@ def render_inertia(request, component_name, props=None, template_name=None):
         if hasattr(request, "session") and request.session.get(key):
             del request.session[key]
 
-    # lazy load props and make request available to props being lazy loaded
-    load_lazy_props(props, request)
-
     # subsequent renders
     inertia_version = get_version()
     is_version_correct = 'X-Inertia-Version' in request.headers and \
                          request.headers["X-Inertia-Version"] == str(inertia_version)
+
+    # check if partial reload is requested
+    only_props = request.headers.get("X-Inertia-Partial-Data", [])
+    if (
+        only_props
+        and request.headers.get("X-Inertia-Partial-Component", "") == component_name
+    ):
+        _props = {}
+        for key in props:
+            if key in only_props:
+                _props.update({key: props[key]})
+    else:
+        _props = props
+
+    # lazy load props and make request available to props being lazy loaded
+    load_lazy_props(_props, request)
+
     if 'X-Inertia' in request.headers:
         response = JsonResponse({
             "component": component_name,
-            "props": props,
+            "props": _props,
             "version": inertia_version,
             "url": request.get_full_path()
         })
         response['X-Inertia'] = True
         response['Vary'] = 'Accept'
         return response
-    context = _build_context(component_name, props,
+    context = _build_context(component_name, _props,
                              inertia_version,
                              url=request.get_full_path())
     return render(request, inertia_template, context)
