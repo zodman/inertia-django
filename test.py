@@ -81,8 +81,8 @@ class TestInertia(TestCase):
         request = requestfactory.get("/")
         self.set_session(request)
         response = render_inertia(request, "Index")
-        self.assertTrue(b'share_custom_data"' in response.content)
-        self.assertTrue(b'share_custom_value"' in response.content)
+        self.assertDictEqual({"custom_data": "custom_value"}, request.session["share"])
+        # self.assertTrue(b'share_custom_value"' in response.content)
 
     def test_redirect_303_for_put_patch_delete_requests(self):
         request = RequestFactory().put("/users/1")
