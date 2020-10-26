@@ -1,4 +1,5 @@
 import json
+from inspect import signature
 from django.core.exceptions import ImproperlyConfigured
 from django.views.generic import View
 from django.views.generic.list import BaseListView
@@ -25,7 +26,11 @@ def load_lazy_props(d, request):
         if isinstance(v, dict):
             load_lazy_props(v, request)
         elif callable(v):
-            d[k] = v(request)
+            # evaluate prop and pass request if prop accept it
+            if len(signature(v).parameters) > 0:
+                d[k] = v()
+            else:
+                d[k] = v(request)
 
 
 def _build_context(component_name, props, version, url):
