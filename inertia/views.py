@@ -20,6 +20,14 @@ import logging
 log = logging.getLogger(__name__)
 
 
+def load_lazy_props(d, request):
+    for k, v in d.items():
+        if isinstance(v, dict):
+            load_lazy_props(v, request)
+        elif callable(v):
+            d[k] = v(request)
+
+
 def _build_context(component_name, props, version, url):
     context = {
         "page": {
@@ -67,6 +75,9 @@ def render_inertia(request, component_name, props=None, template_name=None):
     for key in ("success", "error", "errors"):
         if hasattr(request, "session") and request.session.get(key):
             del request.session[key]
+
+    # lazy load props and make request available to props being lazy loaded
+    load_lazy_props(props, request)
 
     # subsequent renders
     inertia_version = get_version()
