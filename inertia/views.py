@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.middleware import csrf
 from django.urls import get_callable
 from .share import share
-from .version import asset_version
+from .version import get_version
 
 from django.views.generic import View
 from django.conf import settings
@@ -49,8 +49,8 @@ def render_inertia(request, component_name, props=None, template_name=None):
             "in settings.py or pass template parameter."
         )
 
-    # share custom data if any
-    share_method_path = getattr(settings, "INERTIA_SHARE", None)
+    # share custom data or default authenticated user
+    share_method_path = getattr(settings, "INERTIA_SHARE", "inertia.share.share_auth")
     if share_method_path:
         share_method = get_callable(share_method_path)
         share_method(request)
@@ -69,21 +69,21 @@ def render_inertia(request, component_name, props=None, template_name=None):
             del request.session[key]
 
     # subsequent renders
-    inertia_version = asset_version.get_version()
+    inertia_version = get_version()
     is_version_correct = 'X-Inertia-Version' in request.headers and \
                          request.headers["X-Inertia-Version"] == str(inertia_version)
     if 'X-Inertia' in request.headers:
         response = JsonResponse({
             "component": component_name,
             "props": props,
-            "version": asset_version.get_version(),
+            "version": inertia_version,
             "url": request.get_full_path()
         })
         response['X-Inertia'] = True
         response['Vary'] = 'Accept'
         return response
     context = _build_context(component_name, props,
-                             asset_version.get_version(),
+                             inertia_version,
                              url=request.get_full_path())
     return render(request, inertia_template, context)
 
