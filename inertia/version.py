@@ -2,7 +2,10 @@ from django.conf import settings
 
 
 def get_version():
-    asset_version = settings.get("VERSION", 1)
+    try:
+        asset_version = settings.VERSION
+    except AttributeError:
+        asset_version = 1
     if callable(asset_version):
         return asset_version()
     else:

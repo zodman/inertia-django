@@ -20,7 +20,7 @@ settings.configure(
     INERTIA_SHARE = "test.share_custom_func"
 )
 django.setup()
-from inertia.version import asset_version
+from inertia.version import get_version
 from inertia.views import render_inertia
 from inertia.middleware import InertiaMiddleware
 
@@ -33,6 +33,7 @@ class TestInertia(TestCase):
     def test_views(self):
         requestfactory = RequestFactory()
         request = requestfactory.get("/")
+        self.set_session(request)
         response = render_inertia(request, "Index")
         self.assertTrue(b'id="page"' in response.content)
 
@@ -54,7 +55,7 @@ class TestInertia(TestCase):
         defaults = {
             'X-Inertia': 'true',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-Inertia-Version': str(asset_version.get_version()+1),
+            'X-Inertia-Version': str(get_version()+1),
         }
         request = RequestFactory().get("/")
         request.headers = defaults
@@ -66,7 +67,7 @@ class TestInertia(TestCase):
         view = lambda request: HttpResponse()
         defaults = {
             'x-Inertia': 'true',
-            'X-Inertia-Version': asset_version.get_version(),
+            'X-Inertia-Version': get_version(),
             'x-Requested-With': 'XMLHttpRequest'
         }
         request = RequestFactory().get("/", **defaults)
