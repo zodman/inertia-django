@@ -70,7 +70,7 @@ class TestInertia(TestCase):
             'X-Inertia-Version': get_version(),
             'x-Requested-With': 'XMLHttpRequest'
         }
-        request = RequestFactory().get("/", **defaults)
+        request = RequestFactory().get("/") #, **defaults)
         request.headers = defaults
         self.set_session(request)
         response = InertiaMiddleware(view)(request)
@@ -108,3 +108,21 @@ class TestInertia(TestCase):
             return "2"
         response = render_inertia(request, "Index", {"a": "1", "b": lazy_loaded_prop})
         self.assertTrue(b'"props": {"a": "1", "b": "2"}' in response.content)
+
+    def test_partial_loading(self):
+        defaults = {
+            'X-Inertia': 'true',
+            'X-Inertia-Version': get_version(),
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Inertia-Partial-Data': ["a"],
+            "X-Inertia-Partial-Component": "Index"
+        }
+        requestfactory = RequestFactory()
+        request = requestfactory.get("/")
+        request.headers = defaults
+        self.set_session(request)
+        def lazy_loaded_prop():
+            return "2"
+        response = render_inertia(request, "Index", {"a": "1", "b": lazy_loaded_prop})
+        # check that b is not returned because we only ask for a
+        self.assertIn(b'"props": {"a": "1"},', response.content)
