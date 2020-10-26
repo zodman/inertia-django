@@ -28,9 +28,9 @@ def load_lazy_props(d, request):
         elif callable(v):
             # evaluate prop and pass request if prop accept it
             if len(signature(v).parameters) > 0:
-                d[k] = v()
-            else:
                 d[k] = v(request)
+            else:
+                d[k] = v()
 
 
 def _build_context(component_name, props, version, url):
