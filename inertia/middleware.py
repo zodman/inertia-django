@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .share import share
 from .version import get_version
 
@@ -20,10 +20,17 @@ class InertiaMiddleware:
                 response = HttpResponse(status=409)
                 response["X-Inertia-Location"] = request.get_full_path_info()
                 return response
+
         share(request, "flash", {
             'success': request.session.get("success", False),
             'error': request.session.get("error", False)
         })
         share(request, 'errors', request.session.get("errors", {}))
         response = self.get_response(request)
+
+        # manage PUT, PATCH, DELETE redirections
+        if request.method in ["PUT", "PATCH", "DELETE"] and \
+            isinstance(response, HttpResponseRedirect) and \
+            response.status_code == 302:
+            response.status_code = 303
         return response

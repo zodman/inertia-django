@@ -4,7 +4,7 @@ from unittest import mock
 import django
 from django.conf import settings
 from django.test import RequestFactory
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 import os
 
 from inertia.share import share
@@ -82,3 +82,19 @@ class TestInertia(TestCase):
         response = render_inertia(request, "Index")
         self.assertTrue(b'share_custom_data"' in response.content)
         self.assertTrue(b'share_custom_value"' in response.content)
+
+    def test_redirect_303_for_put_patch_delete_requests(self):
+        request = RequestFactory().put("/users/1")
+        self.set_session(request)
+        response = InertiaMiddleware(lambda x: HttpResponseRedirect(redirect_to="/users"))(request)
+        self.assertTrue(response.status_code==303, response.status_code)
+
+        request = RequestFactory().patch("/users/1")
+        self.set_session(request)
+        response = InertiaMiddleware(lambda x: HttpResponseRedirect(redirect_to="/users"))(request)
+        self.assertTrue(response.status_code==303, response.status_code)
+
+        request = RequestFactory().delete("/users/1")
+        self.set_session(request)
+        response = InertiaMiddleware(lambda x: HttpResponseRedirect(redirect_to="/users"))(request)
+        self.assertTrue(response.status_code==303, response.status_code)
