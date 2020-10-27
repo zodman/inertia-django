@@ -7,24 +7,33 @@ from django.test import RequestFactory
 from django.http import HttpResponse, HttpResponseRedirect
 import os
 
+from inertia.share import share
+
+
 settings.configure(
     VERSION=1, DEBUG=True,
     TEMPLATES= [{
          'BACKEND': 'django.template.backends.django.DjangoTemplates',
          'APP_DIRS': True,
          'DIRS': [ os.path.join('testutils'), ],
-    }]
+    }],
+    INERTIA_SHARE = "test.share_custom_func"
 )
 django.setup()
-from inertia.version import asset_version
+from inertia.version import get_version
 from inertia.views import render_inertia
 from inertia.middleware import InertiaMiddleware
+
+
+def share_custom_func(request):
+    share(request, "custom_data", "custom_value")
 
 
 class TestInertia(TestCase):
     def test_views(self):
         requestfactory = RequestFactory()
         request = requestfactory.get("/")
+        self.set_session(request)
         response = render_inertia(request, "Index")
         self.assertTrue(b'id="page"' in response.content)
 
@@ -46,7 +55,7 @@ class TestInertia(TestCase):
         defaults = {
             'X-Inertia': 'true',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-Inertia-Version': str(asset_version.get_version()+1),
+            'X-Inertia-Version': str(get_version()+1),
         }
         request = RequestFactory().get("/")
         request.headers = defaults
@@ -58,7 +67,7 @@ class TestInertia(TestCase):
         view = lambda request: HttpResponse()
         defaults = {
             'x-Inertia': 'true',
-            'X-Inertia-Version': asset_version.get_version(),
+            'X-Inertia-Version': get_version(),
             'x-Requested-With': 'XMLHttpRequest'
         }
         request = RequestFactory().get("/", **defaults)
@@ -66,6 +75,14 @@ class TestInertia(TestCase):
         self.set_session(request)
         response = InertiaMiddleware(view)(request)
         self.assertTrue(response.status_code == 200, response.status_code)
+
+    def test_share_custom_data(self):
+        requestfactory = RequestFactory()
+        request = requestfactory.get("/")
+        self.set_session(request)
+        response = render_inertia(request, "Index")
+        self.assertDictEqual({"custom_data": "custom_value"}, request.session["share"])
+        # self.assertTrue(b'share_custom_value"' in response.content)
 
     def test_redirect_303_for_put_patch_delete_requests(self):
         request = RequestFactory().put("/users/1")
