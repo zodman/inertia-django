@@ -119,8 +119,7 @@ new Vue({
 
 ```
 
-TODO: why not use resolveComponent dynamic.  
-TODO: partials reloads
+TODO: add why not use resolveComponent dynamic.  
 
 
 ## Routing
