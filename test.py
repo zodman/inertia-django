@@ -21,7 +21,7 @@ settings.configure(
 )
 django.setup()
 from inertia.version import get_version
-from inertia.views import render_inertia
+from inertia.views import location, render_inertia
 from inertia.middleware import InertiaMiddleware
 
 
@@ -126,3 +126,9 @@ class TestInertia(TestCase):
         response = render_inertia(request, "Index", {"a": "1", "b": lazy_loaded_prop})
         # check that b is not returned because we only ask for a
         self.assertIn(b'"props": {"a": "1"},', response.content)
+
+
+    def test_location(self):
+        response = location("https://github.com")
+        self.assertEqual(409, response.status_code)
+        self.assertEqual(('X-Inertia-Location', 'https://github.com'), response._headers['x-inertia-location'])

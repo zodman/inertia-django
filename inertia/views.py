@@ -1,6 +1,7 @@
 import json
 from inspect import signature
 from django.core.exceptions import ImproperlyConfigured
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 from django.views.generic.list import BaseListView
 from django.views.generic.detail import BaseDetailView
@@ -116,6 +117,15 @@ def render_inertia(request, component_name, props=None, template_name=None):
                              inertia_version,
                              url=request.get_full_path())
     return render(request, inertia_template, context)
+
+
+def location(url):
+    """Redirect to an external website, or even another non-Inertia endpoint in your app,
+    within an Inertia request."""
+    response = HttpResponse(status=409)
+    response["X-Inertia-Location"] = url
+    return response
+
 
 class InertiaMixin:
     component_name = ""
