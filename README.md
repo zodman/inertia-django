@@ -4,10 +4,10 @@
 
 ### TL;DR: 
 
-`inertia-django` connetor gives you the ability to replace 'classic' templates with Vue components ( or other supported [client-side connectors](https://inertiajs.com/client-side-setup) ).
+`inertia-django` connetor gives you the ability to replace 'classic' templates with **Vue / React / Svelte** components.
 - SPA user experience with MPA style development flow.
 - No need for clientside routing, just use `urls.py`.
-- No need for API endpoints, just directly pass data to the props of the Vue component.
+- No need for API endpoints, just pass data directly to the props of the client-side component.
 
 based on inertia-laravel.
 
