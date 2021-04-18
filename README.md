@@ -32,7 +32,7 @@ def index(request):
 
 ### Root Template
 
-```html=
+```html+django
 {# templates/base.html #}
 {% load js_routes_tags %}<!DOCTYPE html>
 <html  class="h-full bg-gray-200">
@@ -54,7 +54,7 @@ def index(request):
 
 ### Creating responses
 
-```python=
+```python
 from inertia.views import render_inertia
 
 def event_detail(request, id):
@@ -76,7 +76,7 @@ because it had serializer and validation and  fully compatible with django.
 
 ## Client-side setup
 ### Install dependencies
-```
+```bash
 npm install @inertiajs/inertia @inertiajs/inertia-vue 
 # extra deps
 npm install parcel-bundler
@@ -84,7 +84,7 @@ npm install parcel-bundler
 
 ### Initialize app
 
-```javascript=
+```javascript
 import { InertiaApp } from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 Vue.use(InertiaApp);
