@@ -15,7 +15,7 @@ based on inertia-laravel.
 #### more on inertia: https://inertiajs.com
 
 
-## How to use?
+## Usage
 
 ### `render_inertia` function
 
