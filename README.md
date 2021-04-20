@@ -2,9 +2,17 @@
 ![Python package](https://github.com/zodman/inertia-django/workflows/Python%20package/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/zodman/inertia-django/badge.svg?branch=master)](https://coveralls.io/github/zodman/inertia-django?branch=master)
 
-Based on inertia-laravel.
+### TL;DR: 
 
-Check https://github.com/zodman/django-inertia-demo for example how to use
+`inertia-django` connetor gives you the ability to replace 'classic' templates with **Vue / React / Svelte** components.
+- SPA user experience with MPA style development flow.
+- No need for clientside routing, just use `urls.py`.
+- No need for API endpoints, just pass data directly to the props of the client-side component.
+
+based on inertia-laravel.
+
+#### demo project available in this repo: https://github.com/zodman/django-inertia-demo
+#### more on inertia: https://inertiajs.com
 
 
 ## Usage
@@ -19,7 +27,12 @@ from inertia import render_inertia
 
 def index(request):
     # for function views just use the render_inertia function
-    return render_inertia(request, 'Index', props={'title': 'My inertia-django page'}, template_name='index.html')
+    return render_inertia(
+        request,
+        'Index',
+        props={'title': 'My inertia-django page'},
+        template_name='index.html'
+    )
 ```
 
 ----
@@ -32,7 +45,7 @@ def index(request):
 
 ### Root Template
 
-```html=
+```html+django
 {# templates/base.html #}
 {% load js_routes_tags %}<!DOCTYPE html>
 <html  class="h-full bg-gray-200">
@@ -54,7 +67,7 @@ def index(request):
 
 ### Creating responses
 
-```python=
+```python
 from inertia.views import render_inertia
 
 def event_detail(request, id):
@@ -70,13 +83,13 @@ def event_detail(request, id):
     return render_inertia(request, "Event/Show", props)
 ```
 
-We strong suggest to use [marshmallow](https://marshmallow.readthedocs.io/en/latest/) 
-because it had serializer and validation and  fully compatible with django.
+We strongly recommend to use [marshmallow](https://marshmallow.readthedocs.io/en/latest/) 
+since it has a serializer, validation and  fully compatible with django.
 
 
 ## Client-side setup
 ### Install dependencies
-```
+```bash
 npm install @inertiajs/inertia @inertiajs/inertia-vue 
 # extra deps
 npm install parcel-bundler
@@ -84,7 +97,7 @@ npm install parcel-bundler
 
 ### Initialize app
 
-```javascript=
+```javascript
 import { InertiaApp } from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 Vue.use(InertiaApp);
@@ -131,6 +144,4 @@ For the part of the urls the same functionality as laravel or ziggy is
 *django-js-routes* https://pypi.org/project/django-js-routes/
 
 # TODO: explain how inertia/middleware.py works
-
-# more info https://inertiajs.com/
 
