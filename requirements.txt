@@ -12,7 +12,7 @@ bumpversion==0.6.0
     # via -r requirements.in
 coverage==5.2.1
     # via -r requirements.in
-django==3.1.8
+django==3.1.9
     # via -r requirements.in
 pytz==2020.1
     # via django
