@@ -77,6 +77,8 @@ def render_inertia(request, component_name, props=None, template_name=None):
             log.debug((k,v))
             shared[k]=v
         props.update(shared)
+        request.session['share']['flash'] = {'success': None, 'error': None}
+        request.session['share']['errors'] = {}
 
     for key in ("success", "error", "errors"):
         if hasattr(request, "session") and request.session.get(key):
