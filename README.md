@@ -1,10 +1,10 @@
-# inertia-django conector
+# inertia-django connector
 ![Python package](https://github.com/zodman/inertia-django/workflows/Python%20package/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/zodman/inertia-django/badge.svg?branch=master)](https://coveralls.io/github/zodman/inertia-django?branch=master)
 
 ### TL;DR: 
 
-`inertia-django` connetor gives you the ability to replace 'classic' templates with **Vue / React / Svelte** components.
+`inertia-django` connector gives you the ability to replace 'classic' templates with **Vue / React / Svelte** components.
 - SPA user experience with MPA style development flow.
 - No need for clientside routing, just use `urls.py`.
 - No need for API endpoints, just pass data directly to the props of the client-side component.
